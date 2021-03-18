@@ -12,7 +12,10 @@ defmodule NCAA.Server do
     {:ok, pid} = StringIO.open("")
     NCAA.play(pid)
 
-    send_resp(conn, 200, StringIO.flush(pid))
+    resp_text = StringIO.flush(pid)
+    StringIO.close(pid)
+
+    send_resp(conn, 200, resp_text)
   end
 
   match _ do
