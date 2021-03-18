@@ -308,6 +308,21 @@ defmodule NCAA do
   end
 
   def resolve(matchups, pid) do
+    [[{name, _}, _] | _] = matchups
+
+    round =
+      cond do
+        not String.starts_with?(name, "Seed") and length(matchups) == 2 -> "Final Four"
+        not String.starts_with?(name, "Seed") and length(matchups) == 1 -> "Final"
+        length(matchups) === 8 -> "First Round"
+        length(matchups) === 4 -> "Second Round"
+        length(matchups) === 2 -> "Sweet 16"
+        length(matchups) === 1 -> "Elite 8"
+      end
+      |> String.pad_trailing(21, "-")
+
+    IO.puts(pid, round)
+
     matchups
     |> Enum.map(fn [team_a, team_b] -> resolve(team_a, team_b, pid) end)
     |> Enum.chunk_every(2)
