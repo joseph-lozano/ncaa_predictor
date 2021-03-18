@@ -355,6 +355,11 @@ defmodule NCAA do
       "\nData from 'http://mcubed.net/ncaab/seeds.shtml'. Not guaranteed to be accurate.\n"
     )
 
+    IO.puts(
+      pid,
+      "Source code at 'https://github.com/joseph-lozano/ncaa_predictor'\n"
+    )
+
     [{_, w}, {_, e}, {_, s}, {_, m}] =
       ["WEST", "EAST", "SOUTH", "MIDWEST"]
       |> Enum.map(fn region ->
