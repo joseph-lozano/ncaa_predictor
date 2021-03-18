@@ -326,10 +326,10 @@ defmodule NCAA do
       end
 
     if :rand.uniform() * 100 < team_a_win_pct or (team_a_win_pct == 0.0 and team_a < team_b) do
-      IO.puts(pid, "#{name_a} beats #{name_b}" <> "\t" <> seed_text)
+      IO.puts(pid, String.pad_trailing("#{name_a} beats #{name_b}", 21) <> "\t" <> seed_text)
       a
     else
-      IO.puts(pid, "#{name_b} beats #{name_a}" <> "\t" <> seed_text)
+      IO.puts(pid, String.pad_trailing("#{name_b} beats #{name_a}", 21) <> "\t" <> seed_text)
       b
     end
   end
