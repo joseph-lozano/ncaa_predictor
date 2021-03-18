@@ -329,24 +329,30 @@ defmodule NCAA do
     |> resolve(pid)
   end
 
-  def resolve({name_a, team_a} = a, {name_b, team_b} = b, pid) do
+  def resolve({_, team_a} = a, {_, team_b} = b, pid) do
     team_a_win_pct = @data[team_a][team_b]
+
+    {winner, loser} =
+      if :rand.uniform() * 100 < team_a_win_pct or (team_a_win_pct == 0.0 and team_a < team_b) do
+        {a, b}
+      else
+        {b, a}
+      end
 
     seed_text =
       if team_a_win_pct != 0.0 do
-        "#{team_a} seeds beat #{team_b} seeds #{team_a_win_pct}% of the time"
+        winner_pct = @data[elem(winner, 1)][elem(loser, 1)]
+        "#{elem(winner, 0)} beats #{elem(loser, 0)} seeds #{winner_pct}% of the time"
       else
-        winner = Enum.min([team_a, team_b])
-        "No data for #{team_a} seeds vs #{team_b} seeds. Assuming #{winner} wins"
+        "No data for #{elem(winner, 0)} vs #{elem(loser, 0)}. Assuming #{elem(winner, 0)} wins"
       end
 
-    if :rand.uniform() * 100 < team_a_win_pct or (team_a_win_pct == 0.0 and team_a < team_b) do
-      IO.puts(pid, String.pad_trailing("#{name_a} beats #{name_b}", 21) <> "\t" <> seed_text)
-      a
-    else
-      IO.puts(pid, String.pad_trailing("#{name_b} beats #{name_a}", 21) <> "\t" <> seed_text)
-      b
-    end
+    IO.puts(
+      pid,
+      String.pad_trailing("#{elem(winner, 0)} beats #{elem(loser, 0)}", 21) <> "\t" <> seed_text
+    )
+
+    winner
   end
 
   def play(pid) do
