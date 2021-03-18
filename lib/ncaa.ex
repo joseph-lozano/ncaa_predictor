@@ -321,10 +321,11 @@ defmodule NCAA do
       if team_a_win_pct != 0.0 do
         "#{team_a} seeds beat #{team_b} seeds #{team_a_win_pct}% of the time"
       else
-        "No data for #{team_a} seeds vs #{team_b} seeds. Assuming #{team_a} wins"
+        winner = Enum.min([team_a, team_b])
+        "No data for #{team_a} seeds vs #{team_b} seeds. Assuming #{winner} wins"
       end
 
-    if :rand.uniform() * 100 < team_a_win_pct or team_a_win_pct == 0.0 do
+    if :rand.uniform() * 100 < team_a_win_pct or (team_a_win_pct == 0.0 and team_a < team_b) do
       IO.puts(pid, "#{name_a} beats #{name_b}" <> "\t" <> seed_text)
       a
     else
