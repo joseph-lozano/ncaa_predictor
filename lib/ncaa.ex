@@ -350,6 +350,11 @@ defmodule NCAA do
   end
 
   def play(pid) do
+    IO.puts(
+      pid,
+      "\nData from 'http://mcubed.net/ncaab/seeds.shtml'. Not guaranteed to be accurate.\n"
+    )
+
     [{_, w}, {_, e}, {_, s}, {_, m}] =
       ["WEST", "EAST", "SOUTH", "MIDWEST"]
       |> Enum.map(fn region ->
