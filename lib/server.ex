@@ -1,7 +1,9 @@
 defmodule NCAA.Server do
   @moduledoc """
-  Server _site for development purposes
+  Server
   """
+
+  require Logger
 
   use Plug.Router
 
@@ -9,11 +11,17 @@ defmodule NCAA.Server do
   plug(:dispatch)
 
   get "/" do
-    {:ok, pid} = StringIO.open("")
-    NCAA.play(pid)
+    {time, resp_text} =
+      :timer.tc(fn ->
+        {:ok, pid} = StringIO.open("")
+        NCAA.play(pid)
 
-    resp_text = StringIO.flush(pid)
-    StringIO.close(pid)
+        resp_text = StringIO.flush(pid)
+        StringIO.close(pid)
+        resp_text
+      end)
+
+    Logger.info("200: Calculated in #{time}µ")
 
     send_resp(conn, 200, resp_text)
   end
