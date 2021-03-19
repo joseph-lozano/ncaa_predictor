@@ -342,9 +342,9 @@ defmodule NCAA do
     seed_text =
       if team_a_win_pct != 0.0 do
         winner_pct = @data[elem(winner, 1)][elem(loser, 1)]
-        "#{elem(winner, 0)} beats #{elem(loser, 0)} seeds #{winner_pct}% of the time"
+        "#{elem(winner, 1)} seeds beats #{elem(loser, 1)} seeds #{winner_pct}% of the time"
       else
-        "No data for #{elem(winner, 0)} vs #{elem(loser, 0)}. Assuming #{elem(winner, 0)} wins"
+        "No data for #{elem(winner, 1)} seeds vs #{elem(loser, 1)} seeds. Assuming #{elem(winner, 0)} wins"
       end
 
     IO.puts(
